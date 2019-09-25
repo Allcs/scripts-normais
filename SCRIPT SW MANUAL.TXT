@@ -1,0 +1,44 @@
+enable
+configure terminal
+hostname SW-03
+banner motd "GRUPO 3 CASA STARK"
+enable secret SenhaStark
+service password-encryption
+ip domain-name grupo3.local
+crypto key generate rsa general-key modulus 1024
+username joaovictor privilege 15 secret 12345678
+username andrecaires privilege 15 secret 12345678
+username lucascoutinho privilege 15 secret 12345678
+line console 0
+password Console03
+login
+exit
+line vty 0 15
+transport input ssh
+login local
+exec-timeout 9
+exit
+ip default-gateway 192.168.3.1
+vlan 10
+name CLIENTES
+exit
+vlan 20
+name CONSULTORES
+exit
+vlan 30
+name ANALISTAS
+exit
+interface gigabitEthernet 0/1
+switchport mode trunk
+switchport trunk allowed vlan 10,20,30,
+switchport trunk native vlan 1
+no shutdown
+exit
+interface vlan 1
+ip address 192.168.3.254 255.255.255.0
+description INTERFACE DE GERENCIAMENTO
+exit
+exit
+clock set 09:30:22 September 25 2019
+do wr
+
